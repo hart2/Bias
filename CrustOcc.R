@@ -227,7 +227,7 @@ Crust <- anti_join(crust_nd,crust_landbuffer, by = "catalogNumber")
 Crustacean <- Crust %>% 
   arrange(scientificName)
 
-rm(crust,Crust,crust_nd,crust_landbuffer,land_buffer)
+rm(Crust,crust_nd,crust_landbuffer,land_buffer)
 
 # Crustacean does not have duplicates or iffy land data
 write.csv(Crustacean, "./CrusOcc.csv")

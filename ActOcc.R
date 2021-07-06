@@ -21,13 +21,13 @@ library(obistools)
 library(ggplot2)
 
 # data downloaded from OBIS already within lat long limits of the study
-ost<- osteichthyes%>% 
+act<- act%>% 
   select(scientificName,class,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
          ownerInstitutionCode, collectionCode, catalogNumber, occurrenceStatus) %>%  
-  filter(basisOfRecord == "HumanObservation", date_year >= 1940 & date_year < 2021)        #filtering for only human observations and data collection post 1960
+  filter(basisOfRecord == "HumanObservation", date_year >= 1940 & date_year < 2021)        #filtering for only human observations and data collection pact 1960
 
-gensp <- ost%>% 
+gensp <- act%>% 
   select(scientificName)            # Create data frame with only scientific names
 freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear 
 num_gs <- count(freq)               # Counts the number of genus/genus species found in dataset "freq"
@@ -56,135 +56,135 @@ species <- alpha(species)          # Gives True/False whether scientifcName cont
 species <- as.data.frame(species)  # Creating into a vector
 
 # Trying to merge "species" with "div" to remove genus only names
-df1 <- c(species,ost)              # Inputting "species" T/F into "div" dataframe
+df1 <- c(species,act)              # Inputting "species" T/F into "div" dataframe
 df2 <- as.data.frame(df1) %>% 
   filter(species == "TRUE")        # Making it readable as a dataframe and removing genus only
 
-ost <- df2 %>% 
+act <- df2 %>% 
   select(-species)                 # Removing T/F column "div" dataset
 
-num <- ost %>% 
+num <- act %>% 
   select(scientificName) 
 freq1 <- as.data.frame(table(num)) 
-ostSpecies <- freq1 %>% 
+actSpecies <- freq1 %>% 
   filter(Freq != 0)                
 
 # Remove likely duplicates 
 # If scientificName are equal & decimalLongitude are equal & decimalLatitude are equal & eventDate are equal, remove
 # one of the observations
 # NOTE: This step will take some time
-ost_nd <- invisible(unique(ost) %>%         # "invisible()" suppresses output
+act_nd <- invisible(unique(act) %>%         # "invisible()" suppresses output
                         arrange('scientificName'))
-rm(ost,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
+rm(act,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 
 # Important!!!
-# ost_nd (data without duplicates),ostSpecies (frequency of appearance in 
+# act_nd (data without duplicates),actSpecies (frequency of appearance in 
 # dataset of genus species)
 
 #-------Should remove all suspicious land and buffered records from original data ------------
 # buffers commented out had a zero value, buffer of 1000 m
 
-bufferA <- ost_nd %>% 
+bufferA <- act_nd %>% 
   filter(str_detect(scientificName, "^A")) # looking at all scientificNames starting with "a"
 bufferA <- check_onland(bufferA, buffer = 1000)
 
-bufferB <- ost_nd %>% 
+bufferB <- act_nd %>% 
   filter(str_detect(scientificName, "^B"))
 bufferB <- check_onland(bufferB, buffer = 1000)
 
-bufferC <- ost_nd %>% 
+bufferC <- act_nd %>% 
   filter(str_detect(scientificName, "^C"))
 bufferC <- check_onland(bufferC, buffer = 1000)
 
-bufferD <- ost_nd %>% 
+bufferD <- act_nd %>% 
   filter(str_detect(scientificName, "^D"))
 bufferD <- check_onland(bufferD, buffer = 1000)
 
-bufferE <- ost_nd %>% 
+bufferE <- act_nd %>% 
   filter(str_detect(scientificName, "^E"))
 bufferE <- check_onland(bufferE, buffer = 1000)
 
-bufferF <- ost_nd %>% 
+bufferF <- act_nd %>% 
   filter(str_detect(scientificName, "^F"))
 bufferF <- check_onland(bufferF, buffer = 1000)
 
-bufferG <- ost_nd %>% 
+bufferG <- act_nd %>% 
   filter(str_detect(scientificName, "^G"))
 bufferG <- check_onland(bufferG, buffer = 1000)
 
-bufferH <- ost_nd %>% 
+bufferH <- act_nd %>% 
   filter(str_detect(scientificName, "^H"))
 bufferH <- check_onland(bufferH, buffer = 1000)
 
-bufferI <- ost_nd %>%
+bufferI <- act_nd %>%
   filter(str_detect(scientificName, "^I"))
 bufferI <- check_onland(bufferI, buffer = 1000)
 
-bufferJ <- ost_nd %>%
+bufferJ <- act_nd %>%
   filter(str_detect(scientificName, "^J"))
 bufferJ <- check_onland(bufferJ, buffer = 1000)
 
-bufferK <- ost_nd %>%
+bufferK <- act_nd %>%
   filter(str_detect(scientificName, "^K"))
 bufferK <- check_onland(bufferK, buffer = 1000)
 
-bufferL <- ost_nd %>% 
+bufferL <- act_nd %>% 
   filter(str_detect(scientificName, "^L"))
 bufferL <- check_onland(bufferL, buffer = 1000)
 
-bufferM <- ost_nd %>% 
+bufferM <- act_nd %>% 
   filter(str_detect(scientificName, "^M"))
 bufferM <- check_onland(bufferM, buffer = 1000)
 
-bufferN <- ost_nd %>%
+bufferN <- act_nd %>%
   filter(str_detect(scientificName, "^N"))
 bufferN <- check_onland(bufferN, buffer = 1000)
 
-bufferO <- ost_nd %>% 
+bufferO <- act_nd %>% 
   filter(str_detect(scientificName, "^O"))
 bufferO <- check_onland(bufferO, buffer = 1000)
 
-bufferP <- ost_nd %>% 
+bufferP <- act_nd %>% 
   filter(str_detect(scientificName, "^P"))
 bufferP <- check_onland(bufferP, buffer = 1000)
 
-bufferQ <- ost_nd %>%
+bufferQ <- act_nd %>%
   filter(str_detect(scientificName, "^Q"))
 bufferQ <- check_onland(bufferQ, buffer = 1000)
 
-bufferR <- ost_nd %>% 
+bufferR <- act_nd %>% 
   filter(str_detect(scientificName, "^R"))
 bufferR <- check_onland(bufferR, buffer = 1000)
 
-bufferS <- ost_nd %>% 
+bufferS <- act_nd %>% 
   filter(str_detect(scientificName, "^S"))
 bufferS <- check_onland(bufferS, buffer = 1000)
 
-bufferT <- ost_nd %>% 
+bufferT <- act_nd %>% 
   filter(str_detect(scientificName, "^T"))
 bufferT <- check_onland(bufferT, buffer = 1000)
 
-bufferU <- ost_nd %>% 
+bufferU <- act_nd %>% 
   filter(str_detect(scientificName, "^U"))
 bufferU <- check_onland(bufferU, buffer = 1000)
 
-bufferV <- ost_nd %>%
+bufferV <- act_nd %>%
   filter(str_detect(scientificName, "^V"))
 bufferV <- check_onland(bufferV, buffer = 1000)
 
-bufferW <- ost_nd %>%
+bufferW <- act_nd %>%
   filter(str_detect(scientificName, "^W"))
 bufferW <- check_onland(bufferW, buffer = 1000)
 
-bufferX <- ost_nd %>%
+bufferX <- act_nd %>%
   filter(str_detect(scientificName, "^X"))
 bufferX <- check_onland(bufferX, buffer = 1000)
 
-bufferY <- ost_nd %>%
+bufferY <- act_nd %>%
   filter(str_detect(scientificName, "^Y"))
 bufferY <- check_onland(bufferY, buffer = 1000)
 
-bufferZ <- ost_nd %>%
+bufferZ <- act_nd %>%
   filter(str_detect(scientificName, "^Z"))
 bufferZ <- check_onland(bufferZ, buffer = 1000)
 
@@ -214,20 +214,20 @@ land_buffer <- rbind(bufferA,bufferB) %>%
   rbind(bufferY) %>% 
   rbind(bufferZ)
 
-ost_landbuffer <- land_buffer %>% 
+act_landbuffer <- land_buffer %>% 
   arrange(scientificName)
 
 rm(bufferA,bufferB, bufferC, bufferD, bufferE, bufferF, bufferG, bufferH, bufferI,
    bufferJ, bufferK, bufferL, bufferM, bufferN, bufferO, bufferP, bufferQ, 
    bufferR, bufferS, bufferT, bufferU, bufferV, bufferW, bufferX, bufferY, bufferZ)
 
-# remove land_buffer from ost_nd (there are additional 300 records removed 
+# remove land_buffer from act_nd (there are additional 300 records removed 
 # bc they had duplicate catalogNumbers - which isn't supposed to happen, human error putting info into OBIS)
-ost <- anti_join(ost_nd,ost_landbuffer, by = "catalogNumber") 
-Osteichthyes <- ost %>% 
+act <- anti_join(act_nd,act_landbuffer, by = "catalogNumber") 
+Actinopterygii <- act %>% 
   arrange(scientificName)
 
-rm(ost,ost_nd,ost_landbuffer,land_buffer)
+rm(act,act_nd,act_landbuffer,land_buffer)
 
-# Osteichthyes does not have duplicates or iffy land data
-write.csv(Osteichthyes, "./OstOcc.csv")
+# acteichthyes does not have duplicates or iffy land data
+write.csv(Actinopterygii, "./actOcc.csv")
